@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<title>Simple JSONP call Example</title>
+	<script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	
+</head>
+
+<body>
+
+<div id="contact_form">  
+<form action="#">  
+  <fieldset>  
+    <label for="name" id="name_label">Name</label>  
+    <input type="text" name="name" id="name" size="30" value=""  />  
+    <input type="button" name="submit_btn" class="button" id="submit_btn" value="Send" />  
+  </fieldset>  
+</form>  
+<div id="resp"/>
+</div>  
+
+
+<script type="text/javascript">
+$(function() {  
+	  $("#submit_btn").click(function() {  
+		  
+	    console.log("value " + $("#name").val());//may not work under IE :)
+	    
+	    var url = 'http://localhost:9998/rest/greeting/' + $("#name").val();
+	    $.ajax({
+            type: "GET",
+            url: url,
+            data: {},
+            async:true,
+            contentType: "application/json; charset=utf-8",
+            dataType: "jsonp",
+            success: function(data) {
+            	showResponse(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('error');
+            },
+            beforeSend: function (XMLHttpRequest) {
+						//show loading
+            },
+            complete: function (XMLHttpRequest, textStatus) {
+					//hide loading
+            }
+		});
+	    
+	    
+	    
+	    
+	  });  
+	});
+	
+function showResponse (data) {
+	$("#resp").empty();
+    $("#resp").append('<h4>Response: '+data.msg+'</h4>');
+}	
+</script>
+
+</body>
+</html>
